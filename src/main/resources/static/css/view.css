@@ -1,0 +1,139 @@
+body {
+    font-family: 'Poor Story', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.contentTitle, h3 {
+    color: #444;
+}
+
+.contentTitle {
+    font-weight: bold;
+    font-size: xx-large;
+    overflow: hidden;
+}
+
+.content {
+    white-space: pre;
+    margin: 20px 0;
+    padding: 10px;
+    background: #f9f9f9;
+    border-left: 4px solid  plum;
+    overflow: hidden;
+    word-break: break-all;
+}
+
+.detail {
+    margin-bottom: 5px;
+}
+
+.detail span {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+form {
+    margin: 10px 5px;
+}
+
+input[type="submit"], button ,a{
+    background-color: #e9e9e9;
+    text-decoration-color: #333333;
+    color: black;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+    font-family: 'Poor Story', sans-serif;
+}
+
+.comment {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.pre-line{
+    white-space: pre;
+    overflow: hidden;
+    word-break: break-all;
+}
+.commentName {
+    font-weight: bold;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: vertical;
+}
+
+.backBtn {
+    float: left;
+}
+.button-group {
+    text-align: right;
+    margin-top: 10px;
+}
+
+.button-group button,
+.button-group form {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.button-group form:last-child {
+    margin-right: 0;
+}
+
+.button-group button,
+.button-group a,
+.button-group form input[type="submit"],
+.button-group form .deleteBtn ,
+.comment .button-group button,
+.submitComment{
+    background-color: #e9e9e9;
+    color: black;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+    font-family: 'Poor Story', sans-serif;
+    font-size: 13px;
+    padding: 8px 12px; /* 버튼 패딩 */
+    display: inline-block; /* 인라인 블록으로 설정 */
+    margin-right: 10px; /* 오른쪽 마진으로 간격 설정 */
+    transition: background-color 0.2s; /* 부드러운 배경색 변화 효과 */
+}
+
+.button-group button:last-child,
+.button-group a:last-child,
+.button-group form:last-child input[type="submit"] {
+    margin-right: 0;
+}
+
+/* 버튼 호버 효과 */
+.button-group a:hover,
+.button-group button:hover,
+.button-group form input[type="submit"]:hover {
+    background-color: #d9d9d9;
+}
+
+
+

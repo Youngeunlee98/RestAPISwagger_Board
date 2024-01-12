@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:c="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>게시판</title>
+    <link rel="stylesheet" href="/css/list.css">
+    <link rel="stylesheet" href="/css/load.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poor+Story&family=Sunflower:wght@500&display=swap" rel="stylesheet">
+    <style>
+        html {
+            background-image: url('/img/wwww.png');
+            //opacity: 0.5%;
+            position: relative;
+            z-index: 1;
+            background-size: 350px ;
+            background-position: center;
+        }
+    </style>
+</head>
+<body>
+<div class="backColor">
+<!--    <div class="border"></div>-->
+    <div class="main-title">
+        <h1>
+            <br>
+            <a th:href="@{/board/list}" style="text-decoration: none;">게시판</a>
+            <span><img src="/img/cubicIncLogo.png" alt="cubic"></span>
+        </h1>
+    </div>
+
+    <!--검색기능-->
+    <form class="search-form" th:action="@{/board/list}" method="get">
+        <input type="text" name="keyword" th:value="${keyword}"
+               placeholder="검색어를 입력하세요" />
+
+        <select name="type">
+            <option value="title">제목</option>
+            <option value="content">내용</option>
+        </select>
+
+        <select name="sort">
+            <option value="recent">최신순</option>
+            <option value="count">조회수순</option>
+            <option value="comment">댓글수순</option>
+        </select>
+
+        <button class="searchBtn"type="submit">검색</button>
+<!--        &lt;!&ndash;로딩이 생기면?&ndash;&gt;-->
+<!--        <div class="container">-->
+<!--            <div class="box">-->
+<!--                <div class="clock"></div>-->
+<!--            </div>-->
+<!--        </div>-->
+        <button class="writeBtn"><a th:href="@{/board/form}">글 작성</a></button>
+    </form>
+    <table style="border: 1px solid black;">
+        <thead>
+        <tr>
+            <th>NO.</th>
+            <th>Title.</th>
+            <th>About.</th>
+            <th>Date.</th>
+            <th>Views.</th>
+        </tr>
+        </thead>
+        <tbody style="border: 1px solid black;">
+        <tr th:each="board, stat : ${boards}">
+            <td th:text="${currentPageStartNumber - stat.index}"></td>
+            <td>
+                <a th:href="@{/board/view/{id}(id=${board.id})}">
+            <span th:text="${#strings.length(board.title) > 10} ? ${#strings.substring(board.title, 0, 10)} + '...'
+                   : ${board.title}"></span>
+                    <span th:if="${board.comment != null}" th:text="' [' + ${board.comment} + ']'"></span>
+                </a>
+            </td>
+            <td>
+               <span th:text="${#strings.length(board.content) > 20} ? ${#strings.substring(board.content, 0, 20)} +'...'
+                    : ${board.content}"></span>
+            </td>
+            <td th:text="${board.updatedAt}"></td>
+            <td th:text="${board.count}"></td>
+
+            <!-- 검색 결과 메시지 출력 -> 검색한 내용이 없으면 없다고 뜨도록 함. -->
+            <td th:if="${boards == null || boards.isEmpty()}" th:text="'검색조건에 해당하는 게시글이 존재하지 않습니다.'"></td>
+
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- 검색 결과 메시지 출력 -> 검색한 내용이 없으면 없다고 뜨도록 함. -->
+    <p th:if="${boards == null || boards.isEmpty()}" th:text="'검색조건에 해당하는 게시글이 존재하지 않습니다.'" style="text-align: center"></p>
+
+    <!-- 페이징 처리하기 1,2,3,.... 방식 -->
+    <div class="paginationBox">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="first-page" th:classappend="${startPage == 1} ? 'disabled' : ''">
+                    <a class="page-link" th:href="@{/board/list(page=1)}" th:data-page="1" aria-label="First">
+                        <span aria-hidden="true">처음</span>
+                    </a>
+                </li>
+                <li class="page-item" th:classappend="${hasPrevious} ? '' : 'disabled'">
+                    <a class="page-link" th:href="@{/board/list(page=${startPage - 1})}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <!-- 숫자 페이지 링크 -->
+                <li th:each="i : ${#numbers.sequence(startPage, endPage)}" th:classappend="${i == currentPage} ? 'active' : ''" class="page-item">
+                    <a class="page-link" th:text="${i}" th:href="@{/board/list(page=${i})}"
+                       th:data-page="${i}" onclick="savePageNumber(this.getAttribute('data-page'))">1
+                    </a>
+                </li>
+                <li class="page-item" th:classappend="${hasNext} ? '' : 'disabled'">
+                    <a class="page-link" th:href="@{/board/list(page=${endPage+1})}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li class="last-page" th:classappend="${endPage >= totalPages} ? 'disabled' : ''">
+                    <a class="page-link" th:href="@{/board/list(page=${totalPages})}" th:data-page="${totalPages}" aria-label="Last">
+                        <span aria-hidden="true">마지막</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <br>
+
+</div>
+</body>
+<script th:inline="javascript">
+    // 페이지 번호를 sessionStorage에 저장해서 기억하기 -> 페이징 유지
+        function savePageNumber(pageNumber) {
+            sessionStorage.setItem('currentPage', pageNumber);
+    }
+    document.querySelectorAll('.pagination .page-link').forEach(function(link) {
+        // 모든 페이지 링크적용
+        link.addEventListener('click', function() {
+            var page = this.getAttribute('data-page');
+            if (page) {
+                sessionStorage.setItem('currentPage', page);
+            }
+        });
+    });
+</script>
+</html>

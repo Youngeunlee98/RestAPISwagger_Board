@@ -1,0 +1,140 @@
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+button[type="submit"] , a {
+    background-color: #e9e9e9;
+    color: black;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+    font-family: 'Poor Story', sans-serif;
+    font-size: 13px;
+    padding: 8px 12px;
+    display: inline-block;
+    margin-right: 10px;
+    transition: background-color 0.2s;
+}
+
+a {
+    margin-top: 10px;
+}
+
+button[type="submit"]:hover, a:hover {
+    background-color: #d9d9d9;
+}
+
+label {
+    display: block;
+    margin-top: 20px;
+}
+
+.form-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #444;
+    font-weight: bold;
+}
+
+input[type="text"] {
+    max-width: 800px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: 'Poor Story', sans-serif;
+    font-size: 13px;
+}
+
+textarea {
+    max-width: 800px;
+    min-height: 200px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: 'Poor Story', sans-serif;
+    font-size: 13px;
+}
+
+input[type="submit"],
+.submitComment {
+    background-color: #e9e9e9;
+    color: black;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+    font-family: 'Poor Story', sans-serif;
+    font-size: 13px;
+    padding: 8px 12px;
+    display: inline-block;
+    transition: background-color 0.2s;
+}
+
+input[type="submit"]:hover,
+.submitComment:hover {
+    background-color: #d9d9d9;
+}
+
+
+
+/*제목꾸미기*/
+.main-title-form h2,
+.main-title-update h2 {
+    text-align: center;
+    font-size: 40px; /* 조금 작게 설정했을 수도 있습니다. */
+    text-transform: uppercase;
+    color: #222;
+    letter-spacing: 1px;
+    font-family: 'Poor Story', sans-serif;
+    font-weight: 400;
+}
+
+.main-title-form h2 span,
+.main-title-update h2 span {
+    margin-top: 15px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: 'Poor Story', sans-serif;
+    font-weight: 500;
+    display: grid;
+    grid-template-columns: 1fr max-content 1fr;
+    grid-template-rows: 27px 0;
+    grid-gap: 20px;
+    align-items: center;
+}
+
+.main-title-form h2 span:after,
+.main-title-form h2 span:before,
+.main-title-update h2 span:after,
+.main-title-update h2 span:before {
+    content: " ";
+    display: block;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    height: 5px;
+}
+
+h2 span img {
+
+    width: 65px;
+    height: 45px;
+}

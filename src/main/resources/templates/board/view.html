@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 상세보기</title>
+    <link rel="stylesheet" href="/css/view.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poor+Story&family=Sunflower:wght@500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <div class="contentTitle">
+        <span>제목: </span><span th:text="${board.title}">게시글 제목</span>
+    </div>
+    <br><br>
+    <div class="detail">
+        <span>작성일: </span><span th:text="${board.updatedAt}"></span>
+    </div>
+    <div class="detail">
+        <span>조회수: </span><span th:text="${board.count}"></span>
+    </div>
+    <div class="detail">
+        <span>댓글수: </span><span th:text="${board.comment}"></span>
+    </div>
+    <div class="content" th:text="${board.content}">게시글 내용</div>
+
+    <div class="button-group">
+        <a class="backBtn" th:href="@{/board/list}">목록으로 돌아가기</a>
+        <a th:href="@{/board/form/{id}(id=${board.id})}">수정하기</a>
+        <!--삭제버튼-->
+        <form th:action="@{/board/delete/{id}(id=${board.id})}" method="post" onsubmit="return confirm('게시글을 삭제하시겠습니까?')">
+            <input type="hidden" name="_method" value="delete">
+            <input type="submit" value="삭제하기" class="deleteBtn">
+        </form>
+    </div>
+
+    <hr style="border:2px dotted;">
+
+    <h3>댓글 목록</h3>
+    <!-- 댓글 목록 -->
+    <div th:each="comment : ${comments}">
+        <div class="comment" th:id="'comment-content-' + ${comment.id}">
+            <span class="commentName">작성자: </span><span th:text="${comment.writer}">작성자</span>
+            <br>
+            <span class="commentName">작성일: </span>
+            <span th:text="${comment.updatedDate}">작성일</span>
+
+            <p class="pre-line" th:text="${comment.content}">댓글 내용</p>
+            <div class="button-group">
+                <!-- 댓글 수정 버튼 -->
+                <button type="button" th:onclick="'showEditForm(' + ${comment.id} + ');'" >댓글 수정</button>
+
+                <!-- 삭제 버튼 -->
+                <form th:action="@{/comment/delete/{id}(id=${comment.id})}" method="post" onsubmit="return confirm('댓글을 삭제하시겠습니까?')">
+                    <input type="hidden" name="_method" value="delete">
+                    <input type="submit" value="댓글 삭제" class="delBtn">
+                </form>
+            </div>
+        </div>
+
+        <p th:if="${comments == null ||comments.isEmpty()}" th:text="'아직 작성된 댓글이 없습니다.'"></p>
+
+        <!-- 댓글 수정 폼 (숨겨져 있음) -->
+        <div th:id="'editComment-' + ${comment.id}" style="display: none;">
+            <form th:action="@{/comment/update/{id}(id=${comment.id})}" method="post" onsubmit="return checkContent(this);">
+                <textarea name="content" required th:text="${comment.content}"
+                          placeholder="수정할 댓글을 입력해주세요.">[[${comment.content}]]</textarea>
+                <input type="submit" value="수정 완료">
+            </form>
+        </div>
+    </div>
+
+    <h3>댓글 작성</h3>
+    <form th:action="@{/comment/complete}" method="post" onsubmit="return checkCommentContent(this);">
+        <textarea name="content" placeholder="댓글을 입력하세요." required></textarea>
+        <input type="hidden" name="boardId" th:value="${board.id}">
+        <button type="submit" class="submitComment">댓글 작성</button>
+    </form>
+</div>
+
+<script>
+    function showEditForm(commentId) {
+        var commentContentDiv = document.getElementById('comment-content-' + commentId);
+        var editDiv = document.getElementById('editComment-' + commentId);
+
+        if (editDiv.style.display === 'none') {
+            editDiv.style.display = 'block';
+            commentContentDiv.style.display = 'none';
+        } else {
+            editDiv.style.display = 'none';
+            commentContentDiv.style.display = 'block';
+        }
+    }
+
+    function checkContent(form) {
+        let content = form.content.value.trim(); //앞뒤 공백을 제거
+        let originalContent = form["content"].defaultValue.trim();
+
+        if (content === originalContent) {
+            if (!confirm("수정한 내용이 없습니다. 정말 저장하시겠습니까?")) {
+                return false;
+            }
+        } else if (content === "") {
+            alert("한 글자 이상 입력해주세요.");
+            return false;
+        }
+        return true;
+    }
+
+    function checkCommentContent(form) {
+        let content = form.content.value.trim();
+        if (content === "") {
+            alert("댓글을 입력해주세요.");
+            return false;
+        }
+        return true;
+    }
+    //페이지 복워워우어ㅜ어ㅜ어ㅝㅇ
+    document.addEventListener('DOMContentLoaded', function() {
+        const backBtn = document.querySelector('.backBtn');
+
+        backBtn.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            const page = sessionStorage.getItem('currentPage') || 1;
+            window.location.href = '/board/list?page=' + page;
+        });
+    });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mybatisboard.mapper.BoardMapper">
+
+    <!-- 페이징된 글 목록 조회 -->
+    <select id="findAllWithPaging" resultType="com.example.mybatisboard.domain.Board">
+        SELECT * FROM board ORDER BY id DESC LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="getTotalCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM board
+    </select>
+
+    <!-- 글 상세 조회 -->
+    <select id="findById" resultType="com.example.mybatisboard.domain.Board">
+        SELECT * FROM board WHERE id = #{id}
+    </select>
+
+    <!-- 글 등록 -->
+    <insert id="save">
+        INSERT INTO board (title, content, createdAt, updatedAt)
+        VALUES (#{title}, #{content}, NOW(), NOW())
+    </insert>
+
+    <!-- 글 수정 -->
+    <update id="update">
+        UPDATE board
+        SET title = #{title}, content = #{content}, updatedAt = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <!-- 글 삭제 -->
+    <delete id="delete">
+        DELETE FROM board WHERE id = #{id}
+    </delete>
+
+</mapper>
